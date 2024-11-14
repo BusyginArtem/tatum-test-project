@@ -13,7 +13,7 @@ function Form() {
   const handleGetBalance = async () => {
     tatum.current = await TatumSDK.init<Ethereum>({
       network: Network.ETHEREUM,
-      apiKey: { v4: "t-6735ba221ef7601aa027d025-26d3a0805e994c5883b69216" },
+      apiKey: { v4: "" },
       verbose: true,
     });
 
