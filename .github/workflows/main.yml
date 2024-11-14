@@ -1,0 +1,115 @@
+name: Build and Deploy
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  pull_request:
+    branches: 
+      - main
+    types:
+      - closed
+  push:
+    branches: 
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  REACT_APP_API_BASE_URL: '${{ secrets.REACT_APP_TATUM_API_KEY }}'
+
+jobs:
+  # Build Job
+  Build:
+    if: github.event.pull_request.merged == true
+
+    name: build job
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: checkout repository
+        uses: actions/checkout@v3
+      #
+      - name: setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      # clean cache
+      - name: clean cache
+        run: npm cache clean --force
+
+      # install app dependencies
+      - name: install dependencies
+        run: |
+          npm install
+
+      # run tests
+      - name: run tests
+        run: |
+          npm run test
+
+      # build the app
+      - name: build
+        run: |
+          npm run build
+        env:
+          CI: false
+
+      # remove all artifacts from store
+      - name: remove old artifacts
+        uses: actions/github-script@v6
+        id: artifact
+        with:
+          script: |
+            const res = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            res.data.artifacts
+              .forEach(({ id }) => {
+                github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: id,
+                })
+              })
+      # save 
+      - name: upload artifact in order to deploy
+        uses: actions/upload-artifact@v3
+        with: 
+          name: production-files
+          path: ./build
+
+  # Deploy Job
+  Deploy: 
+    if: github.event.pull_request.merged == true
+
+    name: deploy
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # only if the app build successfully
+    needs: Build
+    # 
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with: 
+          name: production-files
+          path: ./build
+          
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.CI_CD_TOKEN }}
+          publish_dir: ./build

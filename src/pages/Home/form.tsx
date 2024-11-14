@@ -1,23 +1,16 @@
-// App.js
-import { Network, TatumSDK, Ethereum } from "@tatumio/tatum";
-import React, { useEffect, useRef, useState } from "react";
+// React
+import React, { useState } from "react";
+// Hooks
+import useTatumSDK from "../../hooks/useTatumSDK";
 
 function Form() {
   const [inputValue, setInputValue] = useState(""); // State to hold the input value
   const [labelText, setLabelText] = useState(""); // State to hold the label text
 
-  const tatum = useRef<Ethereum>(null);
-
-  useEffect(() => () => tatum.current.destroy(), []);
+  const tatumSDK = useTatumSDK();
 
   const handleGetBalance = async () => {
-    tatum.current = await TatumSDK.init<Ethereum>({
-      network: Network.ETHEREUM,
-      apiKey: { v4: "t-6735ba221ef7601aa027d025-26d3a0805e994c5883b69216" },
-      verbose: true,
-    });
-
-    const balance = await tatum.current.address.getBalance({
+    const balance = await tatumSDK.address.getBalance({
       addresses: [inputValue],
     });
     const balanceData = balance.data.filter(
