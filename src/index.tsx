@@ -12,7 +12,7 @@ export function App() {
 			{/*<Header />*/}
 			<main>
 				<Router>
-					<Route path="/tatum-test-project" component={Home} />
+					<Route path="/" component={Home} />
 					<Route default component={NotFound} />
 				</Router>
 			</main>
