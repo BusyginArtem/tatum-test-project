@@ -79,6 +79,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
+            console.log(res)
             res.data.artifacts
               .forEach(({ id }) => {
                 github.rest.actions.deleteArtifact({
@@ -104,9 +105,9 @@ jobs:
     # only if the app build successfully
     needs: Build
     #
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment:
+    #   name: github-pages
+    #   url: ${{ steps.deployment.outputs.page_url }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: download artifact
