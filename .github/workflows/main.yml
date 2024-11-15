@@ -70,24 +70,24 @@ jobs:
           CI: false
 
       # remove all artifacts from store
-      - name: remove old artifacts
-        uses: actions/github-script@v6
-        id: artifact
-        with:
-          script: |
-            const res = await github.rest.actions.listArtifactsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            console.log(res)
-            res.data.artifacts
-              .forEach(({ id }) => {
-                github.rest.actions.deleteArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: id,
-                })
-              })
+      # - name: remove old artifacts
+      #   uses: actions/github-script@v6
+      #   id: artifact
+      #   with:
+      #     script: |
+      #       const res = await github.rest.actions.listArtifactsForRepo({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #       })
+      #       console.log(res)
+      #       res.data.artifacts
+      #         .forEach(({ id }) => {
+      #           github.rest.actions.deleteArtifact({
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #             artifact_id: id,
+      #           })
+      #         })
       # save 
       - name: upload artifact in order to deploy
         uses: actions/upload-artifact@v3
@@ -100,14 +100,13 @@ jobs:
     if: github.event.pull_request.merged == true
 
     name: deploy
+    
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
     # only if the app build successfully
     needs: Build
-    #
-    # environment:
-    #   name: github-pages
-    #   url: ${{ steps.deployment.outputs.page_url }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: download artifact
