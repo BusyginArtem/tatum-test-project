@@ -7,18 +7,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "prepare": "husky"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "prepare": "husky && husky install"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "vitest"
-    ]
+    ],
+    "*.js": "eslint --cache --fix"
   },
   "dependencies": {
     "@tatumio/tatum": "^4.2.0",
