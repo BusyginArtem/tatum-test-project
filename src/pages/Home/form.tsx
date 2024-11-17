@@ -10,14 +10,18 @@ function Form() {
   const tatumSDK = useTatumSDK();
 
   const handleGetBalance = async () => {
-    const balance = await tatumSDK.address.getBalance({
-      addresses: [inputValue],
-    });
-    const balanceData = balance.data.filter(
-      (asset) => asset.asset === "ETH"
-    )[0];
-
-    setLabelText(`Balance: ${balanceData.balance}`);
+    try {
+      const balance = await tatumSDK.address.getBalance({
+        addresses: [inputValue],
+      });
+      const balanceData = balance.data.filter(
+        (asset) => asset.asset === "ETH"
+      )[0];
+  
+      setLabelText(`Balance: ${balanceData.balance}`);
+    } catch (error) {
+      setLabelText("Something went wrong! Try again.")
+    }
   };
 
   const handleChangeWalletAddress = (
