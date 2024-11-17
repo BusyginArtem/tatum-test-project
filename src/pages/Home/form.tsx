@@ -15,17 +15,17 @@ function Form() {
         addresses: [inputValue],
       });
       const balanceData = balance.data.filter(
-        (asset) => asset.asset === "ETH"
+        (asset) => asset.asset === "ETH",
       )[0];
-  
+
       setLabelText(`Balance: ${balanceData.balance}`);
     } catch (error) {
-      setLabelText("Something went wrong! Try again.")
+      setLabelText("Something went wrong! Try again.");
     }
   };
 
   const handleChangeWalletAddress = (
-    e: React.JSX.TargetedEvent<HTMLInputElement>
+    e: React.JSX.TargetedEvent<HTMLInputElement>,
   ) => {
     if (e.target instanceof HTMLInputElement) {
       setInputValue(e.target.value);
