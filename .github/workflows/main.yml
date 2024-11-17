@@ -65,24 +65,24 @@ jobs:
           CI: false
 
       # remove all artifacts from store
-      # - name: remove old artifacts
-      #   uses: actions/github-script@v6
-      #   id: artifact
-      #   with:
-      #     script: |
-      #       const res = await github.rest.actions.listArtifactsForRepo({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #       })
-      #       console.log(res)
-      #       res.data.artifacts
-      #         .forEach(({ id }) => {
-      #           github.rest.actions.deleteArtifact({
-      #             owner: context.repo.owner,
-      #             repo: context.repo.repo,
-      #             artifact_id: id,
-      #           })
-      #         })
+      - name: remove old artifacts
+        uses: actions/github-script@v6
+        id: artifact
+        with:
+          script: |
+            const res = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            console.log(res)
+            res.data.artifacts
+              .forEach(({ id }) => {
+                github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: id,
+                })
+              })
       # save 
       - name: upload artifact in order to deploy
         uses: actions/upload-artifact@v3
@@ -115,11 +115,6 @@ jobs:
           name: production-files
           path: ./dist
           
-      # - name: Deploy to GitHub Pages
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.CI_CD_TOKEN }}
-      #     publish_dir: ./dist
       - name: setup pages - 2 step
         uses: actions/configure-pages@v4
 
