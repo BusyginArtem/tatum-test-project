@@ -69,12 +69,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with: 
           name: production-files
-          path: .
+          path: ./dist
           if-no-files-found: error
 
   # Deploy Job
   Deploy: 
-    # if: github.event.pull_request.merged == true
+    if: github.ref == 'refs/heads/main'
 
     name: deploy
 
@@ -94,7 +94,7 @@ jobs:
         uses: actions/download-artifact@v3
         with: 
           name: production-files
-          path: .
+          path: ./dist
           
       - name: setup pages - 2 step
         uses: actions/configure-pages@v4
@@ -103,7 +103,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
-          path: .
+          path: ./dist
 
       - name: deploy to GitHub pages - 4 step
         id: deployment
