@@ -100,7 +100,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with: 
           name: production-files
-          path: dist
+          path: .
           if-no-files-found: error
 
   # Deploy Job
@@ -135,7 +135,7 @@ jobs:
       - name: setup pages
         uses: actions/configure-pages@v4
 
-      - name: upload artifact
+      - name: upload pages
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
