@@ -110,21 +110,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: download artifact - 1 step
+      - name: download artifact
         uses: actions/download-artifact@v3
         with: 
           name: production-files
           path: ./dist
           
-      - name: setup pages - 2 step
+      - name: setup pages
         uses: actions/configure-pages@v4
 
-      - name: upload artifact - 3 step
+      - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
           path: ./dist
 
-      - name: deploy to GitHub pages - 4 step
+      - name: deploy to GitHub pages
         id: deployment
         uses: actions/deploy-pages@v4
