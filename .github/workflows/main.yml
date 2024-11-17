@@ -2,18 +2,6 @@ name: Build and Deploy
 
 # Controls when the action will run.
 on:
-  # # #
-  # Triggers the workflow on push or pull request events but only for the main branch
-  # pull_request:
-  #   branches: 
-  #     - main
-  #   types:
-  #     - closed
-  # push:
-  #   branches: 
-  #     - main
-  # # #
-
   # Runs on pushes targeting the default branch
   push:
     branches: ['main']
