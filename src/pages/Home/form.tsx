@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
+// Constants
 export const ADDRESS_PLACEHOLDER = 'Enter ETH wallet address to get balance';
 const ADDRESS_INPUT_NAME = 'address';
 
@@ -74,6 +75,7 @@ function Form() {
             display: 'block',
             minHeight: 24,
           }}
+          name="error-message"
         >
           {errors[ADDRESS_INPUT_NAME] &&
             errors[ADDRESS_INPUT_NAME].type === 'required' &&

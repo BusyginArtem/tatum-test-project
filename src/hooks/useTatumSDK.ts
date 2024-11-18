@@ -1,4 +1,5 @@
 import { Network, TatumSDK, Ethereum } from '@tatumio/tatum';
+// Preact
 import { useEffect, useState } from 'preact/hooks';
 
 function useTatumSDK() {
