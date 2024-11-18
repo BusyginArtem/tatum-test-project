@@ -2,7 +2,7 @@ import preactLogo from '../../assets/tatum.jpeg'
 import Form from './form';
 import './style.css';
 
-export function Home() {
+export default function Home() {
 	return (
 		<div class="home">
 			<a href="https://preactjs.com" target="_blank">
@@ -31,11 +31,11 @@ export function Home() {
 	);
 }
 
-function Resource(props) {
-	return (
-		<a href={props.href} target="_blank" class="resource">
-			<h2>{props.title}</h2>
-			<p>{props.description}</p>
-		</a>
-	);
-}
+// function Resource(props) {
+// 	return (
+// 		<a href={props.href} target="_blank" class="resource">
+// 			<h2>{props.title}</h2>
+// 			<p>{props.description}</p>
+// 		</a>
+// 	);
+// }
