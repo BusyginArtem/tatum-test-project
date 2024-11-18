@@ -2,11 +2,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "noEmit": true,
     "allowJs": true,
     "checkJs": true,
-    "types": ["@testing-library/jest-dom"],
+    "types": ["@testing-library/jest-dom", "vitest/globals"],
     /* Preact Config */
     "jsx": "react-jsx",
     "jsxImportSource": "preact",

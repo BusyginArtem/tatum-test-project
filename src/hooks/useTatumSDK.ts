@@ -1,18 +1,20 @@
-import { Network, TatumSDK, Ethereum } from "@tatumio/tatum";
-import { useEffect, useRef } from "preact/hooks";
+import { Network, TatumSDK, Ethereum } from '@tatumio/tatum';
+import { useEffect, useState } from 'preact/hooks';
 
 function useTatumSDK() {
-  const tatum = useRef<Ethereum>(null);
+  const [tatumSDK, setTatumSDK] = useState<Ethereum>(null);
 
-  useEffect(() => () => tatum.current.destroy(), []);
+  useEffect(() => () => tatumSDK && tatumSDK?.destroy(), [tatumSDK]);
 
-  TatumSDK.init<Ethereum>({
-    network: Network.ETHEREUM,
-    apiKey: { v4: process.env.REACT_APP_TATUM_API_KEY },
-    verbose: true,
-  }).then((tatumSDK) => (tatum.current = tatumSDK));
+  useEffect(() => {
+    TatumSDK.init<Ethereum>({
+      network: Network.ETHEREUM,
+      apiKey: { v4: import.meta.env.VITE_APP_TATUM_API_KEY },
+      verbose: true,
+    }).then((tatumSDK) => setTatumSDK(tatumSDK));
+  }, []);
 
-  return tatum.current;
+  return tatumSDK;
 }
 
 export default useTatumSDK;
