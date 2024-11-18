@@ -16,7 +16,7 @@
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write",
-      "vitest --run --changed"
+      "vitest related --run"
     ],
     "*.ts": "eslint --cache --fix"
   },
@@ -38,6 +38,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
+    "@vitest/coverage-v8": "^2.1.5",
     "@vitest/ui": "^2.1.5",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
