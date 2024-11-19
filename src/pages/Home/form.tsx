@@ -12,7 +12,6 @@ const ADDRESS_INPUT_NAME = 'address';
 
 export type FormValues = {
   [ADDRESS_INPUT_NAME]: string;
-  test: string;
 };
 
 type Props = {
