@@ -72,7 +72,6 @@ jobs:
 
       # save 
       - name: upload artifact in order to deploy
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-artifact@v4
         with: 
           name: production-files
