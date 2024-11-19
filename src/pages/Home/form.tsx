@@ -1,7 +1,6 @@
-// React
-import { useState } from 'react';
-// Hooks
-import useTatumSDK from '../../hooks/useTatumSDK';
+// Preact
+import { useState } from 'preact/hooks';
+
 // Form
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,45 +10,40 @@ import { useForm } from 'react-hook-form';
 export const ADDRESS_PLACEHOLDER = 'Enter ETH wallet address to get balance';
 const ADDRESS_INPUT_NAME = 'address';
 
-type FormValues = {
+export type FormValues = {
   [ADDRESS_INPUT_NAME]: string;
+};
+
+type Props = {
+  onSubmit: (address: string) => Promise<string>;
 };
 
 const formSchema = yup.object().shape({
   [ADDRESS_INPUT_NAME]: yup.string().required(),
 });
 
-function Form() {
+function Form({ onSubmit }: Props) {
   const [labelText, setLabelText] = useState(''); // State to hold the label text
 
-  const tatumSDK = useTatumSDK();
-
-  const {
-    register,
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
+  const methods = useForm({
     resolver: yupResolver<FormValues>(formSchema),
     defaultValues: {
       [ADDRESS_INPUT_NAME]: '',
     },
   });
 
-  const handleGetBalance = async ({ address }: FormValues) => {
-    if (!address || !tatumSDK) {
-      return;
-    }
+  const {
+    register,
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
 
+  const handleFormSubmit = async ({ address }: FormValues) => {
     try {
-      const balance = await tatumSDK.address.getBalance({
-        addresses: [address],
-      });
-      const balanceData = balance.data.filter(
-        (asset) => asset.asset === 'ETH',
-      )[0];
+      const balance = await onSubmit(address);
 
-      setLabelText(`Balance: ${balanceData.balance}`);
+      setLabelText(`Balance: ${balance}`);
     } catch (error) {
       setError(ADDRESS_INPUT_NAME, {
         type: 'bad_response',
@@ -58,37 +52,38 @@ function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleGetBalance)}>
-      <p>
+    <form onSubmit={handleSubmit(handleFormSubmit)} aria-label="address-form">
+      <section>
         <input
           type="text"
           {...register(ADDRESS_INPUT_NAME)}
           placeholder={ADDRESS_PLACEHOLDER}
-          style={{ padding: '5px', width: '320px' }}
+          style={{ padding: '5px', width: '320px', height: 'fit-content' }}
         />
 
-        <span
-          style={{
-            color: 'red',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            display: 'block',
-            minHeight: 24,
-          }}
-          name="error-message"
-        >
-          {errors[ADDRESS_INPUT_NAME] &&
-            errors[ADDRESS_INPUT_NAME].type === 'required' &&
-            "The field 'address' is required."}
+        {errors[ADDRESS_INPUT_NAME] && (
+          <span
+            style={{
+              color: 'red',
+              fontSize: '16px',
+              display: 'block',
+              minHeight: 24,
+            }}
+            role="alert"
+          >
+            {errors[ADDRESS_INPUT_NAME].type === 'required' &&
+              "The field 'address' is required."}
 
-          {errors[ADDRESS_INPUT_NAME] &&
-            errors[ADDRESS_INPUT_NAME].type === 'bad_response' &&
-            'Something went wrong! Try again.'}
-        </span>
-      </p>
+            {errors[ADDRESS_INPUT_NAME].type === 'bad_response' &&
+              'Something went wrong! Try again.'}
+          </span>
+        )}
+      </section>
+
       <button type="submit" style={{ padding: '5px' }} disabled={isSubmitting}>
         Click Me
       </button>
+
       <p style={{ padding: '5px', fontSize: '16px', fontWeight: 'bold' }}>
         {labelText}
       </p>

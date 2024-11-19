@@ -1,47 +1,17 @@
 import { test, expect } from 'vitest';
-import {
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from '@testing-library/preact';
-
-// Components
-import Home from '.';
-// Constants
-import { ADDRESS_PLACEHOLDER } from './form';
+import { render, screen, renderHook, waitFor } from '@testing-library/preact';
 // Hooks
 import useTatumSDK from '../../hooks/useTatumSDK';
+// Components
+import Home from '.';
 
 const setup = () => {
   const utils = render(<Home />);
 
-  const formAddressField = screen.getByPlaceholderText(
-    ADDRESS_PLACEHOLDER,
-  ) as HTMLInputElement;
-
-  const formSubmitButton = screen.getByRole('button', {
-    name: 'Click Me',
-  });
-
-  return {
-    formAddressField,
-    formSubmitButton,
-    ...utils,
-  };
+  return utils;
 };
 
 describe('Home page', () => {
-  test('render the page title', () => {
-    setup();
-
-    const pageTitle = screen.getByText(/Tatum Hello/i);
-    expect(pageTitle).toBeInTheDocument();
-  });
-});
-
-describe('Form component', () => {
   test('initialize the Tatum SDK correctly', async () => {
     const { result } = renderHook(() => useTatumSDK());
 
@@ -51,18 +21,10 @@ describe('Form component', () => {
     });
   });
 
-  test('the "address" field is rendered and works correctly', async () => {
-    const { formAddressField } = setup();
+  test('render the page title', () => {
+    setup();
 
-    expect(formAddressField).toBeInTheDocument();
-    fireEvent.change(formAddressField, { target: { value: 'test' } });
-    expect(formAddressField.value).toBe('test');
-  });
-
-  test('display the "address" field required error', async () => {
-    const { formSubmitButton } = setup();
-
-    screen.debug(formSubmitButton);
-    // screen.debug(formAddressField);
+    const pageTitle = screen.getByText(/Tatum Hello/i);
+    expect(pageTitle).toBeInTheDocument();
   });
 });

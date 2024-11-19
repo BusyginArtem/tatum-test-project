@@ -1,41 +1,37 @@
-import preactLogo from '../../assets/tatum.jpeg'
+// Components
+import preactLogo from '../../assets/tatum.jpeg';
 import Form from './form';
+// Hooks
+import useTatumSDK from '../../hooks/useTatumSDK';
+// Styles
 import './style.css';
 
 export default function Home() {
-	return (
-		<div class="home">
-			<a href="https://preactjs.com" target="_blank">
-				<img src={preactLogo} alt="Preact logo" height="160" width="160" />
-			</a>
-			<h1>Tatum Hello</h1>
-			{/* <section>
-				<Resource
-					title="Learn Preact"
-					description="If you're new to Preact, try the interactive tutorial to learn important concepts"
-					href="https://preactjs.com/tutorial"
-				/>
-				<Resource
-					title="Differences to React"
-					description="If you're coming from React, you may want to check out our docs to see where Preact differs"
-					href="https://preactjs.com/guide/v10/differences-to-react"
-				/>
-				<Resource
-					title="Learn Vite"
-					description="To learn more about Vite and how you can customize it to fit your needs, take a look at their excellent documentation"
-					href="https://vitejs.dev"
-				/>
-			</section> */}
-			<Form />
-		</div>
-	);
-}
+  const tatumSDK = useTatumSDK();
 
-// function Resource(props) {
-// 	return (
-// 		<a href={props.href} target="_blank" class="resource">
-// 			<h2>{props.title}</h2>
-// 			<p>{props.description}</p>
-// 		</a>
-// 	);
-// }
+  const handleGetBalance = async (address: string) => {
+    if (!address || !tatumSDK) {
+      return;
+    }
+
+    const balance = await tatumSDK.address.getBalance({
+      addresses: [address],
+    });
+    const balanceData = balance.data.filter(
+      (asset) => asset.asset === 'ETH',
+    )[0];
+
+    return balanceData.balance;
+  };
+
+  return (
+    <div className="home">
+      <a href="https://preactjs.com" target="_blank">
+        <img src={preactLogo} alt="Preact logo" height="160" width="160" />
+      </a>
+      <h1>Tatum Hello</h1>
+
+      <Form onSubmit={handleGetBalance} />
+    </div>
+  );
+}
