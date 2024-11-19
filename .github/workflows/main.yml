@@ -27,7 +27,7 @@ env:
 jobs:
   # Build Job
   Build:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
 
     name: build job
 
