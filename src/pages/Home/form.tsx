@@ -41,6 +41,8 @@ function Form({ onSubmit }: Props) {
 
   const handleFormSubmit = async ({ address }: FormValues) => {
     try {
+      setLabelText('');
+
       const balance = await onSubmit(address);
 
       setLabelText(`Balance: ${balance}`);

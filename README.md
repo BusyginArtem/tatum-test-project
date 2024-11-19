@@ -8,8 +8,26 @@
 
 ## Getting Started
 
--   `npm run dev` - Starts a dev server at http://localhost:5173/
+### .env variables
 
--   `npm run build` - Builds for production, emitting to `dist/`
+| VARIABLE               | MEANING       |
+| ---------------------- | ------------- |
+| VITE_APP_TATUM_API_KEY | Tatum API Key |
 
--   `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+Copy and set .env.local variables
+
+```
+cp .env.example .env.local
+```
+
+#### Run development mode
+
+- `npm run dev` - Starts a dev server at http://localhost:5173/tatum-test-project/
+
+#### Build production
+
+- `npm run build` - Builds for production, emitting to `dist/`
+
+#### Test production build locally
+
+- `npm run preview` - Starts a server at http://localhost:4173/tatum-test-project/ 
