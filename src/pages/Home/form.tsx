@@ -15,7 +15,7 @@ export type FormValues = {
 };
 
 type Props = {
-  onSubmit: (address: string) => Promise<string>;
+  onSubmit: (address: string) => Promise<string | undefined>;
 };
 
 const formSchema = yup.object().shape({
@@ -45,7 +45,7 @@ function Form({ onSubmit }: Props) {
 
       const balance = await onSubmit(address);
 
-      setLabelText(`Balance: ${balance}`);
+      balance && setLabelText(`Balance: ${balance}`);
     } catch (error) {
       setError(ADDRESS_INPUT_NAME, {
         type: 'bad_response',
