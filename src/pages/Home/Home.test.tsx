@@ -17,7 +17,7 @@ describe('Home page', () => {
 
     await waitFor(() => {
       expect(result.current).not.toBeNull();
-      expect(result.current.token).not.toBeNull();
+      expect(result.current?.token).not.toBeNull();
     });
   });
 
